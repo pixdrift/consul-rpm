@@ -1,8 +1,8 @@
 #!/bin/bash
 #
 # consul        Manage the consul agent
-#       
-# chkconfig:   2345 95 95
+#
+# chkconfig:   2345 95 05
 # description: Consul is a tool for service discovery and configuration
 # processname: consul
 # config: /etc/consul.d
