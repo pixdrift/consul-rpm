@@ -39,7 +39,6 @@ echo "Building rpm..."
 rpmbuild -ba rpmbuild/SPECS/consul.spec
 
 echo "Copying rpms back to shared folder..."
-mkdir /vagrant/RPMS
 find $HOME/rpmbuild -type d -name "RPMS" -exec cp -r {} /vagrant/ \\;
 find $HOME/rpmbuild -type d -name "SRPMS" -exec cp -r {} /vagrant/ \\;
 
