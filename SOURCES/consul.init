@@ -52,7 +52,7 @@ start() {
     daemon \
         --pidfile=$pidfile \
         --user=$user \
-        " { $exec $CMD_OPTS &>> $logfile & } ; echo \$! >| $pidfile "
+        " { $exec $CMD_OPTS >> $logfile 2>&1 & } ; echo \$! >| $pidfile "
 
     RETVAL=$?
     echo

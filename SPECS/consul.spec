@@ -23,6 +23,7 @@ Requires(pre): shadow-utils
 
 %package ui
 Summary: Consul Web UI
+Group:   System Environment/Daemons
 Requires: consul = %{version}
 
 %description
