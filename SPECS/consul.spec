@@ -43,9 +43,9 @@ Consul comes with support for a beautiful, functional web UI. The UI can be used
 %install
 mkdir -p %{buildroot}/%{_bindir}
 cp consul %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}/%{_sysconfdir}/%{name}
-cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}/consul.json-dist
-cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}/
+mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
+cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}.d/consul.json-dist
+cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}.d/
 mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
 cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
@@ -93,8 +93,8 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir %attr(750, root, consul) %{_sysconfdir}/%{name}
-%attr(640, root, consul) %{_sysconfdir}/%{name}/consul.json-dist
+%dir %attr(750, root, consul) %{_sysconfdir}/%{name}.d
+%attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul.json-dist
 %dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -106,7 +106,7 @@ rm -rf %{buildroot}
 
 %files ui
 %config(noreplace) %attr(-, root, consul) %{_prefix}/share/%{name}-ui
-%attr(640, root, consul) %{_sysconfdir}/%{name}/consul-ui.json
+%attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul-ui.json
 
 
 %doc
