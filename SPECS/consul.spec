@@ -42,23 +42,22 @@ Consul comes with support for a beautiful, functional web UI. The UI can be used
 %setup -q -c -b 4
 
 %install
-mkdir -p %{buildroot}/%{_bindir}
-cp consul %{buildroot}/%{_bindir}
-mkdir -p %{buildroot}/%{_sysconfdir}/%{name}.d
-cp %{SOURCE5} %{buildroot}/%{_sysconfdir}/%{name}.d/consul.json-dist
-cp %{SOURCE6} %{buildroot}/%{_sysconfdir}/%{name}.d/
-mkdir -p %{buildroot}/%{_sysconfdir}/sysconfig
-cp %{SOURCE1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
-mkdir -p %{buildroot}/%{_sharedstatedir}/%{name}
-mkdir -p %{buildroot}/%{_datadir}/%{name}-ui
-cp -r dist/* %{buildroot}/%{_prefix}/share/%{name}-ui
+install -d -m 0755 %{buildroot}%{_sharedstatedir}/%{name}
+install -D -p -m 0755 %{name} %{buildroot}%{_bindir}/%{name}
+install -D -p -m 0644 %{S:1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
+install -D -p -m 0644 %{S:5} %{buildroot}%{_sysconfdir}/%{name}.d/consul.json-dist
+install -D -p -m 0644 %{S:6} %{buildroot}%{_sysconfdir}/%{name}.d/
+
+install -d -m 0755 %{buildroot}/%{_datadir}/%{name}-ui/static
+install -D -p -m 0644 dist/index.html %{buildroot}/%{_prefix}/share/%{name}-ui/
+install -D dist/static/* %{buildroot}/%{_prefix}/share/%{name}-ui/static
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
-mkdir -p %{buildroot}/%{_unitdir}
-cp %{SOURCE2} %{buildroot}/%{_unitdir}/
+  mkdir -p %{buildroot}/%{_unitdir}
+  cp %{SOURCE2} %{buildroot}/%{_unitdir}/
 %else
-mkdir -p %{buildroot}/%{_initrddir}
-cp %{SOURCE3} %{buildroot}/%{_initrddir}/consul
+  mkdir -p %{buildroot}/%{_initrddir}
+  cp %{SOURCE3} %{buildroot}/%{_initrddir}/consul
 %endif
 
 %pre
