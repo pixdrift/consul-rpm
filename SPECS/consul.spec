@@ -55,7 +55,7 @@ install -D dist/static/* %{buildroot}/%{_prefix}/share/%{name}-ui/static
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
   install -D -p -m 0644 %{S:2} %{buildroot}/%{_unitdir}/
 %else
-  install -D -p -m 0644 %{S:3} %{buildroot}/%{_initrddir}/%{name}
+  install -D -p -m 0755 %{S:3} %{buildroot}/%{_initrddir}/%{name}
 %endif
 
 %pre
@@ -95,16 +95,16 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
-%dir %attr(750, root, consul) %{_sysconfdir}/%{name}.d
-%attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul.json-dist
-%dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
+%dir %attr(750,root,consul) %{_sysconfdir}/%{name}.d
+%attr(640,root,consul) %{_sysconfdir}/%{name}.d/consul.json-dist
+%dir %attr(750,consul,consul) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-%attr(755, root, root) %{_bindir}/consul
+%attr(755,root,root) %{_bindir}/consul
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
-  %{_unitdir}/%{name}.service
+  %attr(644,root,root) %{_unitdir}/%{name}.service
 %else
-  %{_initrddir}/%{name}
+  %attr(755,root,root) %{_initrddir}/%{name}
 %endif
 
 %files ui
