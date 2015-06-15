@@ -103,8 +103,8 @@ rm -rf %{buildroot}
 %attr(755, root, root) %{_bindir}/consul
 
 %files ui
-%config(noreplace) %attr(-, root, consul) %{_prefix}/share/%{name}-ui
-%attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul-ui.json
+%attr(-, root, consul) %{_prefix}/share/%{name}-ui
+%config(noreplace) %attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul-ui.json
 
 
 %doc
