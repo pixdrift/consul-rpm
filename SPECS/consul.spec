@@ -79,15 +79,19 @@ exit 0
 /sbin/chkconfig --add %{name}
 
 %preun
-if [ "$1" = 0 ] ; then
+if [ "$1" = 0 ]; then
     /sbin/service %{name} stop >/dev/null 2>&1
     /sbin/chkconfig --del %{name}
+fi
+
+%postun
+if [ "$1" = 1 ]; then
+    /sbin/service %{name} condrestart >/dev/null 2>&1
 fi
 %endif
 
 %clean
 rm -rf %{buildroot}
-
 
 %files
 %defattr(-,root,root,-)
@@ -95,12 +99,13 @@ rm -rf %{buildroot}
 %attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul.json-dist
 %dir %attr(750, consul, consul) %{_sharedstatedir}/%{name}
 %config(noreplace) %{_sysconfdir}/sysconfig/%{name}
-%if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
-%{_unitdir}/%{name}.service
-%else
-%{_initrddir}/%{name}
-%endif
 %attr(755, root, root) %{_bindir}/consul
+
+%if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
+  %{_unitdir}/%{name}.service
+%else
+  %{_initrddir}/%{name}
+%endif
 
 %files ui
 %attr(-, root, consul) %{_prefix}/share/%{name}-ui
