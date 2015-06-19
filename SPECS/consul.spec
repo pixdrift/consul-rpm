@@ -1,6 +1,6 @@
 Name:           consul
 Version:        0.5.2
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Consul is a tool for service discovery and configuration. Consul is distributed, highly available, and extremely scalable.
 
 Group:          System Environment/Daemons
@@ -119,16 +119,22 @@ rm -rf %{buildroot}
 
 
 %changelog
-* Tue May 19 2015 nathan r. hruby <nhruby@gmail.com>
+* Sat Jun 20 2015 PixelDrift.NET <support@pixeldrift.net> - 0.5.2-2
+- Config init file to use root owned pid file
+- Add logrotate for consul.log
+- Add conditional restart for eL6 package upgrades
+- Internal maintenance 
+
+* Tue May 19 2015 nathan r. hruby <nhruby@gmail.com> - 0.5.2-1
 - Bump to v0.5.2
 
-* Fri May 15 2015 Dan <phrawzty@mozilla.com>
+* Fri May 15 2015 Dan <phrawzty@mozilla.com> - 0.5.1-1
 - Bump to v0.5.1
 
-* Mon Mar 9 2015 Dan <phrawzty@mozilla.com>
+* Mon Mar 9 2015 Dan <phrawzty@mozilla.com> - 0.5.0-2
 - Internal maintenance (bump release)
 
-* Fri Mar 6 2015 mh <mh@immerda.ch>
+* Fri Mar 6 2015 mh <mh@immerda.ch> - 0.5.0-1
 - update to 0.5.0
 - fix SysV init on restart
 - added webui subpackage
@@ -136,9 +142,9 @@ rm -rf %{buildroot}
 - run as unprivileged user
 - protect deployed configs from overwrites
 
-* Thu Nov 6 2014 Tom Lanyon <tom@netspot.com.au>
+* Thu Nov 6 2014 Tom Lanyon <tom@netspot.com.au> - 0.4.1-1
 - updated to 0.4.1
 - added support for SysV init (e.g. EL <7)
 
-* Wed Oct 8 2014 Don Ky <don.d.ky@gmail.com>
+* Wed Oct 8 2014 Don Ky <don.d.ky@gmail.com> - 0.4.0-1
 - updated to 0.4.0
