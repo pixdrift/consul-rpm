@@ -13,6 +13,7 @@ Source3:        %{name}.init
 Source4:        https://dl.bintray.com/mitchellh/%{name}/%{version}_web_ui.zip
 Source5:        %{name}.json
 Source6:        %{name}-ui.json
+Source7:        %{name}.logrotate
 BuildRoot:      %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -47,10 +48,11 @@ install -D -p -m 0755 %{name} %{buildroot}%{_bindir}/%{name}
 install -D -p -m 0644 %{S:1} %{buildroot}/%{_sysconfdir}/sysconfig/%{name}
 install -D -p -m 0644 %{S:5} %{buildroot}%{_sysconfdir}/%{name}.d/%{name}.json-dist
 install -D -p -m 0644 %{S:6} %{buildroot}%{_sysconfdir}/%{name}.d/
+install -D -p -m 0644 %{S:7} %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
 
 install -d -m 0755 %{buildroot}/%{_datadir}/%{name}-ui/static
 install -D -p -m 0644 dist/index.html %{buildroot}/%{_prefix}/share/%{name}-ui/
-install -D dist/static/* %{buildroot}/%{_prefix}/share/%{name}-ui/static
+install -D -p -m 0644 dist/static/* %{buildroot}/%{_prefix}/share/%{name}-ui/static
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
   install -D -p -m 0644 %{S:2} %{buildroot}/%{_unitdir}/
@@ -98,7 +100,8 @@ rm -rf %{buildroot}
 %dir %attr(750,root,consul) %{_sysconfdir}/%{name}.d
 %attr(640,root,consul) %{_sysconfdir}/%{name}.d/consul.json-dist
 %dir %attr(750,consul,consul) %{_sharedstatedir}/%{name}
-%config(noreplace) %{_sysconfdir}/sysconfig/%{name}
+%config(noreplace) %attr(644,root,root) %{_sysconfdir}/logrotate.d/%{name}
+%config(noreplace) %attr(644,root,root) %{_sysconfdir}/sysconfig/%{name}
 %attr(755,root,root) %{_bindir}/consul
 
 %if 0%{?fedora} >= 14 || 0%{?rhel} >= 7
@@ -109,7 +112,7 @@ rm -rf %{buildroot}
 
 %files ui
 %attr(-, root, consul) %{_prefix}/share/%{name}-ui
-%config(noreplace) %attr(640, root, consul) %{_sysconfdir}/%{name}.d/consul-ui.json
+%config(noreplace) %attr(640,root,consul) %{_sysconfdir}/%{name}.d/consul-ui.json
 
 
 %doc
