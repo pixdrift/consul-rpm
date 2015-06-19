@@ -28,7 +28,7 @@ user="consul"
 exec="/usr/bin/$prog"
 pidfile="/var/run/$prog.pid"
 lockfile="/var/lock/subsys/$prog"
-logfile="/var/log/$prog"
+logfile="/var/log/${prog}.log"
 
 # pull in sysconfig settings
 [ -e /etc/sysconfig/$prog ] && . /etc/sysconfig/$prog
@@ -40,24 +40,21 @@ start() {
 
     umask 077
 
-    touch $logfile $pidfile
-    chown $user:$user $logfile $pidfile
+    touch $logfile
+    chown $user:$user $logfile
 
     echo -n $"Starting $prog: "
 
-    ## holy shell shenanigans, batman!
-    ## daemon can't be backgrounded.  we need the pid of the spawned process,
-    ## which is actually done via runuser thanks to --user.  you can't do "cmd
-    ## &; action" but you can do "{cmd &}; action".
-    daemon \
-        --pidfile=$pidfile \
-        --user=$user \
-        " { $exec $CMD_OPTS >> $logfile 2>&1 & } ; echo \$! >| $pidfile "
+    daemon --pidfile=$pidfile --user=$user "$exec $CMD_OPTS &>>$logfile &"
 
     RETVAL=$?
     echo
 
-    [ $RETVAL -eq 0 ] && touch $lockfile
+    if [ $RETVAL -eq 0 ]
+    then
+      touch $lockfile
+      pidof $prog > $pidfile
+    fi
 
     return $RETVAL
 }
